@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Flink - Analizador de Texto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .header {
+            background-color: #e8f4fd;
+            border-bottom: 3px solid #0d6efd;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .job-card {
+            border-radius: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .job-card.active {
+            border: 2px solid #0d6efd;
+        }
+        .results-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            height: 400px;
+            margin-top: 20px;
+        }
+        .tab-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: white;
+            border-bottom: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        .flink-architecture {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .spinner-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .flink-logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <img src="https://flink.apache.org/img/flink-header-logo.svg" alt="Apache Flink Logo" class="flink-logo">
+                <h1 class="mb-0">Apache Flink - Analizador de Texto</h1>
+            </div>
+            <p class="lead mt-2 mb-0">Demostración interactiva de procesamiento de flujos de datos con Apache Flink</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Análisis de Texto</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="file-tab" data-bs-toggle="tab" data-bs-target="#file" type="button">Subir Archivo</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button">Acerca de Flink</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="text" role="tabpanel">
+                        <h3>Analizar Texto con Apache Flink</h3>
+                        <p>Ingresa texto en español para analizarlo usando Apache Flink:</p>
+                        <form id="textForm">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="textInput" rows="6" placeholder="Ingresa texto para analizar..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobTypeSelect" class="form-label">Selecciona el tipo de análisis:</label>
+                                <select class="form-select" id="jobTypeSelect">
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Analizar Texto</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="file" role="tabpanel">
+                        <h3>Subir Archivo para Análisis</h3>
+                        <p>Sube un archivo de texto para analizarlo con Apache Flink:</p>
+                        <form id="fileForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <input class="form-control" type="file" id="fileInput" accept=".txt,.csv,.md,.html,.json">
+                            </div>
+                            <div class="mb-3">
+                                <label for="fileJobTypeSelect" class="form-label">Selecciona el tipo de análisis:</label>
+                                <select class="form-select" id="fileJobTypeSelect">
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Subir y Analizar</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="about" role="tabpanel">
+                        <h3>Acerca de Apache Flink</h3>
+                        <p>
+                            Apache Flink es un framework y motor de procesamiento distribuido para cálculos con estado sobre flujos de datos ilimitados y limitados. Flink está diseñado para ejecutarse en todos los entornos de cluster comunes, realizar cálculos a velocidad de memoria y a cualquier escala.
+                        </p>
+                        
+                        <h4 class="mt-4">Características principales de Apache Flink</h4>
+                        <ul>
+                            <li><strong>Procesamiento de flujos con estado:</strong> Permite mantener estado entre eventos y proporcionar resultados consistentes.</li>
+                            <li><strong>Exactamente una vez:</strong> Garantías de procesamiento de eventos exactamente una vez, incluso en caso de fallos.</li>
+                            <li><strong>Baja latencia y alta throughput:</strong> Procesa millones de eventos por segundo con latencias de milisegundos.</li>
+                            <li><strong>Ventanas de tiempo:</strong> Soporte flexible para procesamiento basado en tiempo de eventos.</li>
+                            <li><strong>Alta disponibilidad:</strong> Recuperación rápida de fallos sin pérdida de datos.</li>
+                        </ul>
+                        
+                        <h4 class="mt-4">Arquitectura básica de Flink</h4>
+                        <div class="text-center my-4">
+                            <img src="https://flink.apache.org/img/flink-home-graphic.png" alt="Arquitectura de Flink" class="img-fluid" style="max-width: 80%;">
+                        </div>
+                        <p>
+                            En esta demostración, estamos utilizando la API DataStream de Flink para procesar flujos de texto y realizar análisis de frecuencia de palabras y extracción de palabras clave. La integración con FastAPI nos permite exponer esta funcionalidad a través de una interfaz web interactiva.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="results-container">
+                    <h3>Resultados</h3>
+                    <div id="spinner" class="spinner-container">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Procesando...</span>
+                        </div>
+                        <p class="mt-2">Procesando datos con Apache Flink...</p>
+                    </div>
+                    <div id="resultsContent">
+                        <p>Los resultados del análisis aparecerán aquí.</p>
+                    </div>
+                    <div class="chart-container" id="resultsChart">
+                        <!-- Aquí se mostrará el gráfico -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Variables globales
+        let currentChart = null;
+        let pollingInterval = null;
+        
+        // Cargar tipos de trabajos disponibles
+        async function loadJobTypes() {
+            try {
+                const response = await fetch('/jobs');
+                const data = await response.json();
+                
+                const jobTypeSelect = document.getElementById('jobTypeSelect');
+                const fileJobTypeSelect = document.getElementById('fileJobTypeSelect');
+                
+                jobTypeSelect.innerHTML = '';
+                fileJobTypeSelect.innerHTML = '';
+                
+                data.available_jobs.forEach(job => {
+                    const option = document.createElement('option');
+                    option.value = job.id;
+                    option.textContent = `${job.name} - ${job.description}`;
+                    
+                    const option2 = option.cloneNode(true);
+                    
+                    jobTypeSelect.appendChild(option);
+                    fileJobTypeSelect.appendChild(option2);
+                });
+            } catch (error) {
+                console.error('Error cargando tipos de trabajos:', error);
+            }
+        }
+        
+        // Manejar envío del formulario de texto
+        document.getElementById('textForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const text = document.getElementById('textInput').value.trim();
+            const jobType = document.getElementById('jobTypeSelect').value;
+            
+            if (!text) {
+                alert('Por favor ingresa texto para analizar');
+                return;
+            }
+            
+            // Mostrar spinner
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('resultsContent').innerHTML = '<p>Procesando datos...</p>';
+            
+            // Limpiar gráfico anterior
+            if (currentChart) {
+                currentChart.destroy();
+                currentChart = null;
+            }
+            
+            // Detener polling anterior si existe
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('text', text);
+                formData.append('job_type', jobType);
+                
+                const response = await fetch('/analyze/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.analysis_id) {
+                    // Comenzar a consultar los resultados
+                    pollResults(data.analysis_id);
+                }
+            } catch (error) {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('resultsContent').innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        });
+        
+        // Manejar envío del formulario de archivo
+        document.getElementById('fileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('fileInput');
+            const jobType = document.getElementById('fileJobTypeSelect').value;
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Por favor selecciona un archivo');
+                return;
+            }
+            
+            // Mostrar spinner
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('resultsContent').innerHTML = '<p>Procesando archivo...</p>';
+            
+            // Limpiar gráfico anterior
+            if (currentChart) {
+                currentChart.destroy();
+                currentChart = null;
+            }
+            
+            // Detener polling anterior si existe
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                formData.append('job_type', jobType);
+                
+                const response = await fetch('/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.analysis_id) {
+                    // Comenzar a consultar los resultados
+                    pollResults(data.analysis_id);
+                }
+            } catch (error) {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('resultsContent').innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        });
+        
+        // Función para consultar los resultados
+        function pollResults(analysisId) {
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/results/${analysisId}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'completed' && data.results) {
+                        // Detener el polling
+                        clearInterval(pollingInterval);
+                        pollingInterval = null;
+                        
+                        // Ocultar spinner
+                        document.getElementById('spinner').style.display = 'none';
+                        
+                        // Mostrar resultados
+                        displayResults(data.results);
+                    }
+                } catch (error) {
+                    console.error('Error consultando resultados:', error);
+                }
+            }, 1000); // Consultar cada segundo
+        }
+        
+        // Función para mostrar los resultados
+        function displayResults(results) {
+            const resultsContent = document.getElementById('resultsContent');
+            
+            // Si hay un error
+            if (results.length === 1 && results[0].error) {
+                resultsContent.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4>Error en el procesamiento</h4>
+                        <p>${results[0].error}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Limitar a los 10 primeros resultados para la tabla
+            const topResults = results.slice(0, 10);
+            
+            let tableHtml = `
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ítem</th>
+                                <th>Conteo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            topResults.forEach(result => {
+                tableHtml += `
+                    <tr>
+                        <td>${result.item}</td>
+                        <td>${result.count}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted">Mostrando los ${topResults.length} resultados principales de ${results.length} totales.</p>
+            `;
+            
+            resultsContent.innerHTML = tableHtml;
+            
+            // Crear gráfico
+            createChart(topResults);
+        }
+        
+        // Función para crear un gráfico
+        function createChart(data) {
+            const chartContainer = document.getElementById('resultsChart');
+            const canvas = document.createElement('canvas');
+            chartContainer.innerHTML = '';
+            chartContainer.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Preparar datos para el gráfico
+            const labels = data.map(item => item.item);
+            const values = data.map(item => item.count);
+            
+            // Generar colores
+            const backgroundColors = generateColors(data.length);
+            
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frecuencia',
+                        data: values,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.6', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Resultados del Análisis'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frecuencia'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Ítems'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Función para generar colores aleatorios
+        function generateColors(count) {
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                const hue = (i * 360 / count) % 360;
+                colors.push(`hsla(${hue}, 70%, 60%, 0.6)`);
+            }
+            return colors;
+        }
+        
+        // Cargar los tipos de trabajos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadJobTypes();
+        });
+    </script>
+</body>
+</html>
