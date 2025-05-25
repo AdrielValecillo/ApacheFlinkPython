@@ -9,25 +9,25 @@ from pyflink.datastream.functions import FlatMapFunction
 class WordSplitter(FlatMapFunction):
 
     def flat_map(self, line):
-        # Convert to lowercase for case-insensitive counting
+        # Convertir a minúsculas para conteo insensible a mayúsculas/minúsculas
         line = line.lower()
         
-        # Remove punctuation marks but preserve letters with accents and ñ
-        # We don't use unicodedata.normalize here to keep accented characters intact
+        # Eliminar signos de puntuación pero preservar letras con acentos y ñ
+        # No usamos unicodedata.normalize aquí para mantener los caracteres con acentos intactos
         
-        # Define punctuation to remove (excluding letters with accents)
+        # Definir signos de puntuación para eliminar (excluyendo letras con acentos)
         spanish_punct = ''.join(c for c in string.punctuation)
         
-        # Replace punctuation with spaces
+        # Reemplazar signos de puntuación con espacios
         for char in spanish_punct:
             line = line.replace(char, ' ')
         
-        # Split by whitespace and filter out empty strings
+        # Dividir por espacios en blanco y filtrar cadenas vacías
         words = [word.strip() for word in line.split() if word.strip()]
         
-        # Process each word
+        # Procesar cada palabra
         for word in words:
-            # Additional check to ensure the word contains only valid Spanish characters
+            # Verificar que la palabra contenga solo caracteres válidos en español
             if re.match(r'^[a-záéíóúüñ]+$', word, re.UNICODE):
                 yield (word, 1)
 

@@ -8,26 +8,26 @@ import json
 
 class WordSplitter(FlatMapFunction):
     """
-    Divide el texto en palabras manejando texto en espau00f1ol con acentos y caracteres especiales.
-    Realiza procesamiento insensible a mayu00fasculas/minu00fasculas.
+    Divide el texto en palabras manejando texto en español con acentos y caracteres especiales.
+    Realiza procesamiento insensible a mayúsculas/minúsculas.
     """
     def flat_map(self, line):
-        # Convertir a minu00fasculas para conteo insensible a mayu00fasculas/minu00fasculas
+        # Convertir a minúsculas para conteo insensible a mayúsculas/minúsculas
         line = line.lower()
         
-        # Eliminar signos de puntuaciu00f3n pero preservar letras con acentos y u00f1
+        # Eliminar signos de puntuación pero preservar letras con acentos y ñ
         spanish_punct = ''.join(c for c in string.punctuation)
         
-        # Reemplazar puntuaciu00f3n con espacios
+        # Reemplazar puntuacion con espacios
         for char in spanish_punct:
             line = line.replace(char, ' ')
         
-        # Dividir por espacios en blanco y filtrar cadenas vacu00edas
+        # Dividir por espacios en blanco y filtrar cadenas vacías
         words = [word.strip() for word in line.split() if word.strip()]
         
         # Procesar cada palabra
         for word in words:
-            # Verificaciu00f3n adicional para asegurar que la palabra contiene solo caracteres espau00f1oles vu00e1lidos
+            # Verificación adicional para asegurar que la palabra contiene solo caracteres españoles válidos
             if re.match(r'^[a-zu00e1u00e9u00edu00f3u00fau00fcu00f1]+$', word, re.UNICODE):
                 yield (word, 1)
 
@@ -49,10 +49,10 @@ class KeywordExtractor(FlatMapFunction):
         ])
     
     def flat_map(self, line):
-        # Convertir a minu00fasculas
+        # Convertir a minúsculas
         line = line.lower()
         
-        # Eliminar puntuaciu00f3n
+        # Eliminar puntuación
         for char in string.punctuation:
             line = line.replace(char, ' ')
         
@@ -68,7 +68,7 @@ class KeywordExtractor(FlatMapFunction):
 
 class TextAnalysisJob:
     """
-    Representa un trabajo de anu00e1lisis de texto utilizando Apache Flink.
+    Representa un trabajo de análisis de texto utilizando Apache Flink.
     """
     def __init__(self, job_type: str, input_file: str):
         self.job_type = job_type
@@ -77,7 +77,7 @@ class TextAnalysisJob:
     
     def get_processor(self):
         """
-        Obtiene la funciu00f3n de procesamiento adecuada segu00fan el tipo de trabajo.
+        Obtiene la función de procesamiento adecuada según el tipo de trabajo.
         """
         if self.job_type == "word_count":
             return WordSplitter()
@@ -90,25 +90,25 @@ class TextAnalysisJob:
 class FlinkProcessor:
     """
     Clase principal para ejecutar trabajos de Apache Flink.
-    Proporciona mu00e9todos para ejecutar diferentes tipos de anu00e1lisis de texto.
+    Proporciona métodos para ejecutar diferentes tipos de análisis de texto.
     """
     def __init__(self):
         pass
     
     def execute_job(self, job: TextAnalysisJob) -> List[Dict[str, Any]]:
         """
-        Ejecuta un trabajo de anu00e1lisis de texto con Apache Flink y devuelve los resultados.
+        Ejecuta un trabajo de análisis de texto con Apache Flink y devuelve los resultados.
         """
         try:
-            # Crear el entorno de ejecuciu00f3n
+            # Crear el entorno de ejecución
             env = StreamExecutionEnvironment.get_execution_environment()
             env.set_parallelism(1)  # Usar paralelismo de 1 para pruebas locales
             
-            # Leer lu00edneas desde el archivo de texto
+            # Leer líneas desde el archivo de texto
             with open(job.input_file, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
             
-            # Crear un flujo de datos a partir de la colecciu00f3n de lu00edneas
+            # Crear un flujo de datos a partir de la colección de líneas
             text_stream = env.from_collection(lines)
             
             # Obtener el procesador adecuado para este trabajo
@@ -153,37 +153,7 @@ class FlinkProcessor:
             return results
         
         except Exception as e:
-            # En caso de error, devolver informaciu00f3n sobre el error
+            # En caso de error, devolver información sobre el error
             error_info = {"error": str(e), "job_type": job.job_type, "input_file": job.input_file}
             return [error_info]
 
-# Ejemplo de uso (para pruebas)
-def run_test():
-    processor = FlinkProcessor()
-    
-    # Crear un archivo de prueba si no existe
-    test_file = "test_input.txt"
-    if not os.path.exists(test_file):
-        with open(test_file, "w", encoding="utf-8") as f:
-            f.write("Este es un texto de prueba para Apache Flink.\n")
-            f.write("Apache Flink es una plataforma excelente para procesamiento de datos.\n")
-            f.write("El procesamiento de flujos de datos es muy u00fatil para aplicaciones en tiempo real.\n")
-    
-    # Ejecutar diferentes tipos de trabajos
-    print("Ejecutando contador de palabras...")
-    word_count_job = TextAnalysisJob("word_count", test_file)
-    word_count_results = processor.execute_job(word_count_job)
-    print(f"Resultados: {word_count_results[:5]}...")
-    
-    print("\nEjecutando anu00e1lisis de sentimiento...")
-    sentiment_job = TextAnalysisJob("sentiment_analysis", test_file)
-    sentiment_results = processor.execute_job(sentiment_job)
-    print(f"Resultados: {sentiment_results}")
-    
-    print("\nEjecutando extracciu00f3n de palabras clave...")
-    keyword_job = TextAnalysisJob("keyword_extraction", test_file)
-    keyword_results = processor.execute_job(keyword_job)
-    print(f"Resultados: {keyword_results[:5]}...")
-
-if __name__ == "__main__":
-    run_test()

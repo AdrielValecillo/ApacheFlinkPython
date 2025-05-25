@@ -2,11 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-import uvicorn
 import os
-import asyncio
-import json
-from typing import List, Dict, Any
 import threading
 import queue
 
@@ -108,5 +104,3 @@ async def list_available_jobs():
         ]
     }
 
-if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
