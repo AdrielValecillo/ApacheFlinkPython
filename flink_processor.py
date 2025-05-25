@@ -40,12 +40,70 @@ class KeywordExtractor(FlatMapFunction):
     def __init__(self):
         # Palabras comunes a filtrar (stopwords)
         self.stopwords = set([
-            'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'a', 'ante', 'bajo',
-            'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta', 'para', 'por', 'segu00fan',
-            'sin', 'sobre', 'tras', 'durante', 'mediante', 'que', 'cual', 'quien', 'cuyo', 'como',
-            'cuando', 'cuanto', 'donde', 'adonde', 'si', 'este', 'esta', 'estos', 'estas', 'ese',
-            'esa', 'esos', 'esas', 'aquel', 'aquella', 'aquellos', 'aquellas', 'mi', 'tu', 'su',
-            'mis', 'tus', 'sus', 'nuestro', 'vuestro', 'del', 'al', 'lo'
+            # Artículos
+            'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'al', 'del',
+            
+            # Pronombres
+            'yo', 'me', 'mi', 'conmigo', 'tú', 'te', 'ti', 'contigo', 'usted',
+            'él', 'ella', 'ello', 'le', 'se', 'sí', 'consigo',
+            'nosotros', 'nosotras', 'nos', 'vosotros', 'vosotras', 'os',
+            'ustedes', 'ellos', 'ellas', 'les', 'les', 'se', 'sí', 'consigo',
+            'mí', 'mío', 'mía', 'míos', 'mías', 'tu', 'tuyo', 'tuya', 'tuyos', 'tuyas',
+            'su', 'suyo', 'suya', 'suyos', 'suyas', 'nuestro', 'nuestra', 'nuestros', 'nuestras',
+            'vuestro', 'vuestra', 'vuestros', 'vuestras', 'suyo', 'suya', 'suyos', 'suyas',
+            'mis', 'tus', 'sus',
+            
+            # Preposiciones
+            'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante',
+            'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según',
+            'sin', 'so', 'sobre', 'tras', 'versus', 'vía',
+            
+            # Conjunciones
+            'y', 'e', 'ni', 'o', 'u', 'bien', 'sea', 'pero', 'sino', 'aunque', 'mas',
+            'que', 'si', 'como', 'porque', 'pues', 'luego', 'conque', 'cuando',
+            'mientras', 'apenas', 'aun', 'aunque', 'tan', 'tanto', 'tal', 'así',
+            
+            # Adverbios comunes
+            'aquí', 'allí', 'allá', 'acá', 'ahí', 'donde', 'adonde', 'como', 'cuando', 'cuanto',
+            'así', 'muy', 'mucho', 'poco', 'algo', 'casi', 'tan', 'tanto', 'bastante',
+            'sí', 'no', 'nunca', 'jamás', 'acaso', 'quizá', 'quizás', 'tal', 'vez', 'también',
+            'ahora', 'antes', 'después', 'luego', 'pronto', 'tarde', 'temprano', 'todavía',
+            'ya', 'ayer', 'hoy', 'mañana', 'siempre', 'aún', 'entonces', 'mientras',
+            'más', 'menos', 'mejor', 'peor', 'bien', 'mal', 'regular', 'despacio', 'deprisa',
+            
+            # Formas de ser y estar
+            'soy', 'eres', 'es', 'somos', 'sois', 'son',
+            'era', 'eras', 'éramos', 'erais', 'eran',
+            'fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron',
+            'sido', 'siendo', 'sea', 'seas', 'seamos', 'seáis', 'sean',
+            'estoy', 'estás', 'está', 'estamos', 'estáis', 'están',
+            'estaba', 'estabas', 'estábamos', 'estabais', 'estaban',
+            'estuve', 'estuviste', 'estuvo', 'estuvimos', 'estuvisteis', 'estuvieron',
+            'estado', 'estando',
+            
+            # Verbos comunes
+            'tener', 'tengo', 'tienes', 'tiene', 'tenemos', 'tenéis', 'tienen',
+            'hacer', 'hago', 'haces', 'hace', 'hacemos', 'hacéis', 'hacen',
+            'ir', 'voy', 'vas', 'va', 'vamos', 'vais', 'van',
+            'decir', 'digo', 'dices', 'dice', 'decimos', 'decís', 'dicen',
+            'ver', 'veo', 'ves', 've', 'vemos', 'veis', 'ven',
+            'dar', 'doy', 'das', 'da', 'damos', 'dais', 'dan',
+            'poder', 'puedo', 'puedes', 'puede', 'podemos', 'podéis', 'pueden',
+            'querer', 'quiero', 'quieres', 'quiere', 'queremos', 'queréis', 'quieren',
+            'deber', 'debo', 'debes', 'debe', 'debemos', 'debéis', 'deben',
+            
+            # Demostrativos
+            'este', 'esta', 'estos', 'estas', 'ese', 'esa', 'esos', 'esas',
+            'aquel', 'aquella', 'aquellos', 'aquellas', 'esto', 'eso', 'aquello',
+            
+            # Palabras interrogativas/exclamativas
+            'qué', 'quién', 'quiénes', 'cuál', 'cuáles', 'cómo', 'dónde', 'cuándo',
+            'cuánto', 'cuánta', 'cuántos', 'cuántas',
+            
+            # Otras palabras comunes
+            'cada', 'todo', 'toda', 'todos', 'todas', 'mismo', 'misma', 'mismos', 'mismas',
+            'otro', 'otra', 'otros', 'otras', 'cualquier', 'cualquiera', 'cualesquiera',
+            'primero', 'segundo', 'tercero', 'etc', 'etcétera'
         ])
     
     def flat_map(self, line):
