@@ -168,8 +168,13 @@ function displayResults(results) {
         return;
     }
     
-    // Limitar a los 10 primeros resultados para la tabla
+    // Guardar todos los resultados en un atributo de datos para acceso posterior
+    resultsContent.setAttribute('data-all-results', JSON.stringify(results));
+    
+    // Limitar a los 10 primeros resultados para la tabla inicial
     const topResults = results.slice(0, 10);
+    const showAll = resultsContent.getAttribute('data-show-all') === 'true';
+    const displayResults = showAll ? results : topResults;
     
     let tableHtml = `
         <div class="table-responsive">
@@ -183,7 +188,7 @@ function displayResults(results) {
                 <tbody>
     `;
     
-    topResults.forEach(result => {
+    displayResults.forEach(result => {
         tableHtml += `
             <tr>
                 <td>${result.item}</td>
@@ -196,13 +201,34 @@ function displayResults(results) {
                 </tbody>
             </table>
         </div>
-        <p class="text-muted">Mostrando los ${topResults.length} resultados principales de ${results.length} totales.</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="text-muted mb-0">Mostrando ${showAll ? 'todos los' : `los ${displayResults.length} primeros`} resultados de ${results.length} totales.</p>
+            <button id="toggleResultsBtn" class="btn btn-sm btn-outline-primary">
+                ${showAll ? 'Mostrar menos' : 'Ver análisis completo'}
+            </button>
+        </div>
     `;
     
     resultsContent.innerHTML = tableHtml;
     
-    // Crear gráfico
-    createChart(topResults);
+    // Agregar manejador de eventos al botón
+    document.getElementById('toggleResultsBtn').addEventListener('click', toggleAllResults);
+    
+    // Crear gráfico (solo con los resultados mostrados)
+    createChart(displayResults);
+}
+
+// Función para alternar entre mostrar todos los resultados o solo los primeros 10
+function toggleAllResults() {
+    const resultsContent = document.getElementById('resultsContent');
+    const showAll = resultsContent.getAttribute('data-show-all') !== 'true';
+    
+    // Actualizar el atributo para la próxima vez
+    resultsContent.setAttribute('data-show-all', showAll);
+    
+    // Volver a mostrar los resultados con la nueva configuración
+    const allResults = JSON.parse(resultsContent.getAttribute('data-all-results'));
+    displayResults(allResults);
 }
 
 // Función para crear un gráfico

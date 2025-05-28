@@ -1,6 +1,594 @@
 [
   {
-    "item": "hola",
+    "item": "de",
+    "count": 19
+  },
+  {
+    "item": "y",
+    "count": 15
+  },
+  {
+    "item": "la",
+    "count": 13
+  },
+  {
+    "item": "el",
+    "count": 8
+  },
+  {
+    "item": "su",
+    "count": 7
+  },
+  {
+    "item": "ella",
+    "count": 7
+  },
+  {
+    "item": "en",
+    "count": 5
+  },
+  {
+    "item": "un",
+    "count": 5
+  },
+  {
+    "item": "las",
+    "count": 5
+  },
+  {
+    "item": "sobre",
+    "count": 4
+  },
+  {
+    "item": "por",
+    "count": 4
+  },
+  {
+    "item": "que",
+    "count": 4
+  },
+  {
+    "item": "una",
+    "count": 3
+  },
+  {
+    "item": "traductor",
+    "count": 3
+  },
+  {
+    "item": "sus",
+    "count": 3
+  },
+  {
+    "item": "yo",
+    "count": 3
+  },
+  {
+    "item": "bajo",
+    "count": 3
+  },
+  {
+    "item": "al",
+    "count": 3
+  },
+  {
+    "item": "del",
     "count": 2
+  },
+  {
+    "item": "a",
+    "count": 2
+  },
+  {
+    "item": "amigos",
+    "count": 2
+  },
+  {
+    "item": "sencillas",
+    "count": 2
+  },
+  {
+    "item": "para",
+    "count": 2
+  },
+  {
+    "item": "mis",
+    "count": 2
+  },
+  {
+    "item": "placer",
+    "count": 2
+  },
+  {
+    "item": "me",
+    "count": 2
+  },
+  {
+    "item": "fueron",
+    "count": 2
+  },
+  {
+    "item": "los",
+    "count": 2
+  },
+  {
+    "item": "como",
+    "count": 2
+  },
+  {
+    "item": "mundo",
+    "count": 2
+  },
+  {
+    "item": "sonrisa",
+    "count": 2
+  },
+  {
+    "item": "literalidad",
+    "count": 2
+  },
+  {
+    "item": "es",
+    "count": 2
+  },
+  {
+    "item": "lo",
+    "count": 2
+  },
+  {
+    "item": "palabra",
+    "count": 1
+  },
+  {
+    "item": "ofrezco",
+    "count": 1
+  },
+  {
+    "item": "desnudas",
+    "count": 1
+  },
+  {
+    "item": "intactas",
+    "count": 1
+  },
+  {
+    "item": "delicias",
+    "count": 1
+  },
+  {
+    "item": "estas",
+    "count": 1
+  },
+  {
+    "item": "noches",
+    "count": 1
+  },
+  {
+    "item": "vividas",
+    "count": 1
+  },
+  {
+    "item": "traducidas",
+    "count": 1
+  },
+  {
+    "item": "tierra",
+    "count": 1
+  },
+  {
+    "item": "natal",
+    "count": 1
+  },
+  {
+    "item": "agua",
+    "count": 1
+  },
+  {
+    "item": "ellas",
+    "count": 1
+  },
+  {
+    "item": "dulces",
+    "count": 1
+  },
+  {
+    "item": "durante",
+    "count": 1
+  },
+  {
+    "item": "ocios",
+    "count": 1
+  },
+  {
+    "item": "remotos",
+    "count": 1
+  },
+  {
+    "item": "mares",
+    "count": 1
+  },
+  {
+    "item": "cielo",
+    "count": 1
+  },
+  {
+    "item": "ahora",
+    "count": 1
+  },
+  {
+    "item": "lejano",
+    "count": 1
+  },
+  {
+    "item": "eso",
+    "count": 1
+  },
+  {
+    "item": "doy",
+    "count": 1
+  },
+  {
+    "item": "sonrientes",
+    "count": 1
+  },
+  {
+    "item": "llenas",
+    "count": 1
+  },
+  {
+    "item": "ingenuidad",
+    "count": 1
+  },
+  {
+    "item": "musulmana",
+    "count": 1
+  },
+  {
+    "item": "schehrazada",
+    "count": 1
+  },
+  {
+    "item": "madre",
+    "count": 1
+  },
+  {
+    "item": "suculenta",
+    "count": 1
+  },
+  {
+    "item": "luz",
+    "count": 1
+  },
+  {
+    "item": "misterio",
+    "count": 1
+  },
+  {
+    "item": "fermentando",
+    "count": 1
+  },
+  {
+    "item": "con",
+    "count": 1
+  },
+  {
+    "item": "brazos",
+    "count": 1
+  },
+  {
+    "item": "sublime",
+    "count": 1
+  },
+  {
+    "item": "mirada",
+    "count": 1
+  },
+  {
+    "item": "enternecida",
+    "count": 1
+  },
+  {
+    "item": "alah",
+    "count": 1
+  },
+  {
+    "item": "clemente",
+    "count": 1
+  },
+  {
+    "item": "misericordioso",
+    "count": 1
+  },
+  {
+    "item": "venir",
+    "count": 1
+  },
+  {
+    "item": "delicadamente",
+    "count": 1
+  },
+  {
+    "item": "mecidas",
+    "count": 1
+  },
+  {
+    "item": "manos",
+    "count": 1
+  },
+  {
+    "item": "lustral",
+    "count": 1
+  },
+  {
+    "item": "doniazada",
+    "count": 1
+  },
+  {
+    "item": "buena",
+    "count": 1
+  },
+  {
+    "item": "nombres",
+    "count": 1
+  },
+  {
+    "item": "hojas",
+    "count": 1
+  },
+  {
+    "item": "oro",
+    "count": 1
+  },
+  {
+    "item": "coloreadas",
+    "count": 1
+  },
+  {
+    "item": "terciopelo",
+    "count": 1
+  },
+  {
+    "item": "pupilas",
+    "count": 1
+  },
+  {
+    "item": "hasta",
+    "count": 1
+  },
+  {
+    "item": "adolescencia",
+    "count": 1
+  },
+  {
+    "item": "dura",
+    "count": 1
+  },
+  {
+    "item": "esparcirlas",
+    "count": 1
+  },
+  {
+    "item": "voluptuosas",
+    "count": 1
+  },
+  {
+    "item": "libres",
+    "count": 1
+  },
+  {
+    "item": "oriental",
+    "count": 1
+  },
+  {
+    "item": "eternizado",
+    "count": 1
+  },
+  {
+    "item": "os",
+    "count": 1
+  },
+  {
+    "item": "entrego",
+    "count": 1
+  },
+  {
+    "item": "tales",
+    "count": 1
+  },
+  {
+    "item": "son",
+    "count": 1
+  },
+  {
+    "item": "frescor",
+    "count": 1
+  },
+  {
+    "item": "carne",
+    "count": 1
+  },
+  {
+    "item": "rosa",
+    "count": 1
+  },
+  {
+    "item": "existe",
+    "count": 1
+  },
+  {
+    "item": "honrado",
+    "count": 1
+  },
+  {
+    "item": "impersonal",
+    "count": 1
+  },
+  {
+    "item": "apenas",
+    "count": 1
+  },
+  {
+    "item": "atenuada",
+    "count": 1
+  },
+  {
+    "item": "leve",
+    "count": 1
+  },
+  {
+    "item": "parpadeo",
+    "count": 1
+  },
+  {
+    "item": "ligera",
+    "count": 1
+  },
+  {
+    "item": "crea",
+    "count": 1
+  },
+  {
+    "item": "sugestiva",
+    "count": 1
+  },
+  {
+    "item": "grande",
+    "count": 1
+  },
+  {
+    "item": "potencia",
+    "count": 1
+  },
+  {
+    "item": "literaria",
+    "count": 1
+  },
+  {
+    "item": "produce",
+    "count": 1
+  },
+  {
+    "item": "verdad",
+    "count": 1
+  },
+  {
+    "item": "firme",
+    "count": 1
+  },
+  {
+    "item": "e",
+    "count": 1
+  },
+  {
+    "item": "inmutable",
+    "count": 1
+  },
+  {
+    "item": "desnudez",
+    "count": 1
+  },
+  {
+    "item": "piedra",
+    "count": 1
+  },
+  {
+    "item": "cautiva",
+    "count": 1
+  },
+  {
+    "item": "aroma",
+    "count": 1
+  },
+  {
+    "item": "primitivo",
+    "count": 1
+  },
+  {
+    "item": "cristaliza",
+    "count": 1
+  },
+  {
+    "item": "separa",
+    "count": 1
+  },
+  {
+    "item": "desata",
+    "count": 1
+  },
+  {
+    "item": "fija",
+    "count": 1
+  },
+  {
+    "item": "encadena",
+    "count": 1
+  },
+  {
+    "item": "divagador",
+    "count": 1
+  },
+  {
+    "item": "doma",
+    "count": 1
+  },
+  {
+    "item": "mismo",
+    "count": 1
+  },
+  {
+    "item": "tiempo",
+    "count": 1
+  },
+  {
+    "item": "detiene",
+    "count": 1
+  },
+  {
+    "item": "infernal",
+    "count": 1
+  },
+  {
+    "item": "facilidad",
+    "count": 1
+  },
+  {
+    "item": "pluma",
+    "count": 1
+  },
+  {
+    "item": "felicito",
+    "count": 1
+  },
+  {
+    "item": "sea",
+    "count": 1
+  },
+  {
+    "item": "porque",
+    "count": 1
+  },
+  {
+    "item": "encontrar",
+    "count": 1
+  },
+  {
+    "item": "genio",
+    "count": 1
+  },
+  {
+    "item": "simple",
+    "count": 1
+  },
+  {
+    "item": "libre",
+    "count": 1
+  },
+  {
+    "item": "necia",
+    "count": 1
+  },
+  {
+    "item": "renombre",
+    "count": 1
   }
 ]
